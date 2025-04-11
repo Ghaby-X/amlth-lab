@@ -1,2 +1,2 @@
-learnt the difference between w and wb in writing to a file
-Last modified on: 2025-04-11 08:02:34
+Learnt about file-handling in linux. Specifically the difference between 'w' and 'wb' in writing to files
+Last modified on: 2025-04-11 08:15:29
