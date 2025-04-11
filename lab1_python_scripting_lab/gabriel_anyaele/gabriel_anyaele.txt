@@ -1,0 +1,2 @@
+learnt the difference between w and wb in writing to a file
+Last modified on: 2025-04-11 08:02:34
