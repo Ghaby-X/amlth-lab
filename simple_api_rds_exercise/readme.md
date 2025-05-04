@@ -31,28 +31,42 @@ This is a lightweight RESTful API built with Flask and MySQL for fetching variou
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/sales-reporting-api.git
-cd sales-reporting-api
+git clone https://github.com/Ghaby-X/amlth-lab.git
+cd amlth-lab/simple_api_rds_exercise
 ```
 
 ### 2. Install Dependencies
 
-Ensure you have Python 3 and `pip` installed. Then run:
+Ensure you have Python 3 and `pip` installed.
+
+
+Create and activate a virtual environment (linux environment is being used);
 
 ```bash
-pip install flask pymysql
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Install dependencies;
+
+```bash
+pip install -r requirements.txt
 ```
 
 ### 3. Configure Environment
 
-Create a `config.py` file with the following:
+Create a .env file; 
+```
+touch .env
+```
+
+populate the env file with your mysql connection parameters. It should be of this format:
 
 ```python
-mysql_host = 'your-db-host'
-mysql_user = 'your-db-user'
-mysql_password = 'your-db-password'
-mysql_database = 'your-db-name'
-PORT = 5000
+MYSQL_HOST=<your_host>
+MYSQL_USER='<your_user>'
+MYSQL_PASSWORD='<your_password>'
+MYSQL_DATABASE='<your_db>'
 ```
 
 ---
@@ -60,7 +74,7 @@ PORT = 5000
 ## ▶️ Running the Server
 
 ```bash
-python app.py
+flask run
 ```
 
 The server will start on `http://localhost:5000`.
