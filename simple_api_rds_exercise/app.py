@@ -32,12 +32,12 @@ def fetch_query(query):
 def welcome():
     return "Welcome to my little server"
 
-@app.route("/customers_spend")
+@app.route("/top_customer_spends")
 def customer_spend():
     data = fetch_query(query=queries.get_top_customers)
     return jsonify(data)
 
-@app.route("/monthly_sales")
+@app.route("/monthly_sales_report")
 def monthly_sales():
     data = fetch_query(query=queries.get_monthly_sales)
     return jsonify(data)

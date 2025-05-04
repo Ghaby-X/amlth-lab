@@ -47,7 +47,7 @@ get_products_never_ordered = """
     LEFT JOIN 
         order_items ON products.product_id = order_items.product_id
     WHERE 
-        order_items.product_id IS NULL
+        order_items.product_id IS NULL;
 """
 
 # gets the average orders by country
