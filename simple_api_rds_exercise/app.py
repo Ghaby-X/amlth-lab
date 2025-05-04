@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 
 import pymysql
 import config
@@ -13,7 +13,7 @@ mysql = pymysql.connect(host=config.mysql_host, user=config.mysql_user, password
 # function to fetch query with mysql and handle exceptions
 def fetch_query(query):
     try:
-        cur = mysql.cursor(pymysql.cursors.DictCursor)
+        cur = mysql.cursor(pymysql.cursors.DictCursor) # set response type to dictionary
         cur.execute(query)
         data = cur.fetchall()
         cur.close()
@@ -30,7 +30,7 @@ def fetch_query(query):
 
 @app.route("/")
 def welcome():
-    return "Welcome to my little server"
+    return render_template('index.html')
 
 @app.route("/top_customer_spends")
 def customer_spend():
