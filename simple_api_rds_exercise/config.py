@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-PORT = os.getenv('PORT')
+PORT = os.getenv('PORT') or 5000
 
 # MYSQL configurations
 mysql_host = os.getenv('MYSQL_HOST')
