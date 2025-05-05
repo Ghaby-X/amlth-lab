@@ -63,7 +63,7 @@ get_avg_order_by_country ="""
         FROM 
             orders
         JOIN 
-            order_items ON orders.order_id = orders.order_id
+            order_items ON orders.order_id = order_items.order_id
         GROUP BY 
             orders.order_id, orders.customer_id
     ) AS order_values
