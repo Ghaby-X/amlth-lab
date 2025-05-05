@@ -1,11 +1,11 @@
 
-# 🛒 Sales Reporting API – Flask + MySQL
+# Sales Reporting API – Flask + MySQL
 
 This is a lightweight RESTful API built with Flask and MySQL for fetching various sales-related reports from a database.
 
 ---
 
-## 🚀 Features
+## Features
 
 - Retrieve top customers by spend
 - View monthly sales reports
@@ -15,7 +15,7 @@ This is a lightweight RESTful API built with Flask and MySQL for fetching variou
 
 ---
 
-## 📦 Project Structure
+## Project Structure
 
 ```
 .
@@ -26,7 +26,7 @@ This is a lightweight RESTful API built with Flask and MySQL for fetching variou
 
 ---
 
-## ⚙️ Setup Instructions
+##  Setup Instructions
 
 ### 1. Clone the Repository
 
@@ -71,7 +71,7 @@ MYSQL_DATABASE='<your_db>'
 
 ---
 
-## ▶️ Running the Server
+## Running the Server
 
 ```bash
 flask run
@@ -81,7 +81,7 @@ The server will start on `http://localhost:5000`.
 
 ---
 
-## 📬 Available Endpoints
+## Available Endpoints
 
 | Endpoint                        | Method | Description                              |
 |--------------------------------|--------|------------------------------------------|
@@ -94,7 +94,7 @@ The server will start on `http://localhost:5000`.
 
 ---
 
-## 💻 Example Response
+## Example Response
 
 ```json
 {
