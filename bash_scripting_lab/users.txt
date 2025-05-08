@@ -1,0 +1,4 @@
+username,fullname,group,email
+jdoe,John Doe,engineering
+asmith,Alice Smith,engineering,gabriel.anyaele@amalitechtraining.org
+mjones,Mike Jones,design
