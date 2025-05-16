@@ -25,11 +25,11 @@ sync_file() {
   if [[ -f "$file1" && ! -f "$file2" ]]; then
     mkdir -p "$(dirname "$file2")"
     cp -p "$file1" "$file2"
-    LOG+=("[Copied → Dir2] $file_rel")
+    LOG+=("[Copied → $DIR2] $file_rel")
   elif [[ -f "$file2" && ! -f "$file1" ]]; then
     mkdir -p "$(dirname "$file1")"
     cp -p "$file2" "$file1"
-    LOG+=("[Copied → Dir1] $file_rel")
+    LOG+=("[Copied → $DIR1] $file_rel")
   elif [[ -f "$file1" && -f "$file2" ]]; then
     # Both exist, check for differences
     if ! cmp -s "$file1" "$file2"; then
@@ -37,10 +37,10 @@ sync_file() {
       ts2=$(stat -c %Y "$file2")
       if [[ "$ts1" -gt "$ts2" ]]; then
         cp -p "$file1" "$file2"
-        LOG+=("[Updated Dir2] $file_rel")
+        LOG+=("[Updated $DIR2] $file_rel")
       elif [[ "$ts2" -gt "$ts1" ]]; then
         cp -p "$file2" "$file1"
-        LOG+=("[Updated Dir1] $file_rel")
+        LOG+=("[Updated $DIR1] $file_rel")
       else
         # Conflict: same timestamp, different content
         ts=$(date +"%Y%m%d%H%M%S")

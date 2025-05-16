@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# Default values
 TARGET="."
-MIN_SIZE=0 # Minimum size in kilobytes
+MIN_SIZE=0
 MAX_DEPTH=3
-TOP_N=0 # Show top N largest entries (0 = all)
+TOP_N=0
 
 usage() {
   echo "Usage: $0 [-p path] [-m min_size_kb] [-d max_depth] [-t top_n]"
@@ -21,28 +20,57 @@ while getopts "p:m:d:t:" opt; do
   esac
 done
 
-# Convert max depth to actual number of slashes beyond base
-BASE_DEPTH=$(echo "$TARGET" | awk -F"/" '{print NF}')
-MAX_FIND_DEPTH=$((BASE_DEPTH + MAX_DEPTH))
+TARGET=$(realpath "$TARGET")
 
 echo "Disk usage for: $TARGET (min size: ${MIN_SIZE}KB, max depth: $MAX_DEPTH)"
 echo "-------------------------------------------------------------"
 
-# Find all files and directories, get sizes in KB
-find "$TARGET" -mindepth 0 -maxdepth $MAX_DEPTH -print0 |
+# Gather size and depth information
+find "$TARGET" -mindepth 0 -maxdepth "$MAX_DEPTH" -print0 |
   while IFS= read -r -d '' item; do
-    size=$(du -k "$item" 2>/dev/null | cut -f1)
-    if [[ -n "$size" && "$size" -ge "$MIN_SIZE" ]]; then
-      echo -e "$size\t$item"
+    size=$(du -sk "$item" 2>/dev/null | cut -f1)
+    if [[ "$size" -ge "$MIN_SIZE" ]]; then
+      echo -e "$(realpath "$item")\t$size"
     fi
   done |
-  sort -nr |
-  ([[ $TOP_N -gt 0 ]] && head -n "$TOP_N" || cat) |
-  awk '
+  sort |
+  awk -v base="$TARGET" -v top_n="$TOP_N" '
+  BEGIN {
+    count = 0
+  }
   {
-    size = $1
-    path = $2
-    indent = gsub(/\//, "/", path) - 1
-    if (indent > 0) indent--
-    printf "%s%*s- %s [%d KB]\n", "", indent * 2, "", path, size
+    path = $1
+    size = $2
+    full[path] = size
+    parts = split(path, tokens, "/")
+    parent = ""
+    for (i = 1; i < parts; i++) {
+      parent = parent "/" tokens[i]
+      if (!(parent in seen)) {
+        seen[parent] = 1
+        order[++n] = parent
+      }
+    }
+    if (!(path in seen)) {
+      seen[path] = 1
+      order[++n] = path
+    }
+  }
+  END {
+    shown = 0
+    for (i = 1; i <= n; i++) {
+      path = order[i]
+      size = full[path]
+      if (size == "") size = 0
+      depth = gsub("/", "/", path) - gsub("/", "/", base)
+      if (depth < 0) depth = 0
+      split(path, segs, "/")
+      name = segs[length(segs)]
+      if (path == base) name = segs[length(segs)]
+      indent = ""
+      for (j = 0; j < depth; j++) indent = indent "  "
+      printf "%s- %s [%d KB]\n", indent, name, size
+      shown++
+      if (top_n > 0 && shown >= top_n) break
+    }
   }'

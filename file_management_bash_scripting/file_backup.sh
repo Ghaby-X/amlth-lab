@@ -34,6 +34,7 @@ done
 [[ ! -d "$SOURCE" ]] && echo "Source directory does not exist." && exit 2
 mkdir -p "$DEST"
 
+# log function to log activity into provided file
 log() {
   echo "$1"
   [[ -n "$LOGFILE" ]] && echo "$1" >>"$LOGFILE"
@@ -41,16 +42,24 @@ log() {
 
 log "Starting backup: $MODE mode"
 
+# archive and compress file on MODE full
 if [[ "$MODE" == "full" ]]; then
   log "Creating full backup of $SOURCE"
   tar -czf "$DEST/$ARCHIVE_NAME" -C "$SOURCE" .
+
 elif [[ "$MODE" == "partial" ]]; then
+
+  # adding include list
   if [[ -n "$INCLUDE_FILE" ]]; then
     log "Creating partial backup (include list: $INCLUDE_FILE)"
     tar -czf "$DEST/$ARCHIVE_NAME" -C "$SOURCE" -T "$INCLUDE_FILE"
+
+  # adding exclude list
   elif [[ -n "$EXCLUDE_FILE" ]]; then
     log "Creating partial backup (excluding files from: $EXCLUDE_FILE)"
     tar -czf "$DEST/$ARCHIVE_NAME" -C "$SOURCE" --exclude-from="$EXCLUDE_FILE" .
+
+  # if include and exclude list is not provided, exit from function
   else
     log "Partial mode requires an include (-i) or exclude (-e) file."
     exit 3

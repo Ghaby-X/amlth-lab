@@ -35,8 +35,8 @@ echo
 echo "=== Duplicate Files Found ==="
 for dup in "${!duplicates[@]}"; do
   original="${duplicates[$dup]}"
-  echo "Duplicate: $dup"
-  echo "Original : $original"
+  echo "duplicate_pair: $dup"
+  echo "duplicate_pair: $original"
 
   case "$ACTION" in
   d)

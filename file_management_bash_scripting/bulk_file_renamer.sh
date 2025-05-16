@@ -35,6 +35,7 @@ cd "$DIRECTORY" || {
   exit 1
 }
 
+# initialize count
 COUNT=1
 
 for FILE in *; do

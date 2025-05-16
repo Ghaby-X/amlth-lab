@@ -2,26 +2,26 @@
 
 # Script to organize files and folders based on types
 
+# Check if the user provided a directory
+if [[ -n "$1" ]]; then
+  target_dir="$1"
+else
+  target_dir="." # Default to current directory
+fi
+
+# Check if target_dir exists and is a directory
+if [[ ! -d "$target_dir" ]]; then
+  echo "Error: '$target_dir' is not a valid directory."
+  exit 1
+fi
+
+# Change to the target directory
+cd "$target_dir" || exit
+
 # create directories that does not exist
-if [[ ! -d Documents ]]; then
-  mkdir Documents
-fi
-
-if [[ ! -d Images ]]; then
-  mkdir Images
-fi
-
-if [[ ! -d Videos ]]; then
-  mkdir Videos
-fi
-
-if [[ ! -d Audio ]]; then
-  mkdir Audio
-fi
-
-if [[ ! -d Archives ]]; then
-  mkdir Archives
-fi
+for directory in Documents Images Videos Audio Archives; do
+  [[ ! -d $directory ]] && mkdir $directory
+done
 
 # function to sort file
 sort_file() {
@@ -47,11 +47,11 @@ sort_file() {
     echo moving file to Audio
     mv $filename Audio/
     ;;
-  *)
-  vip | tar)
+  zip | tar)
     echo moving file to Archives
     mv $filename Archives/
     ;;
+  *)
     echo "can't tell type of file for: $filename"
     ;;
   esac
